@@ -1,15 +1,22 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { createElement, useEffect, useRef, type ReactNode } from "react";
+
+type Tag = "div" | "section" | "li" | "article" | "header" | "footer";
 
 type Props = {
   children: ReactNode;
   delay?: number;
-  as?: "div" | "section" | "li" | "article" | "header" | "footer";
+  as?: Tag;
   className?: string;
 };
 
-export function Reveal({ children, delay = 0, as = "div", className = "" }: Props) {
+export function Reveal({
+  children,
+  delay = 0,
+  as = "div",
+  className = "",
+}: Props) {
   const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -32,15 +39,13 @@ export function Reveal({ children, delay = 0, as = "div", className = "" }: Prop
     return () => obs.disconnect();
   }, []);
 
-  const Tag = as as keyof JSX.IntrinsicElements;
-  return (
-    // @ts-expect-error - dynamic tag with ref
-    <Tag
-      ref={ref}
-      className={`reveal ${className}`}
-      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
-    >
-      {children}
-    </Tag>
+  return createElement(
+    as,
+    {
+      ref,
+      className: `reveal ${className}`,
+      style: delay ? { transitionDelay: `${delay}ms` } : undefined,
+    },
+    children
   );
 }
