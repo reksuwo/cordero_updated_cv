@@ -1,0 +1,184 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0a0a;
+  --foreground: #e7e5e4;
+  --muted: #737373;
+  --subtle: #525252;
+  --rule: #1f1f1f;
+  --rule-strong: #2a2a2a;
+  --accent: #f5f5f4;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-geist-mono);
+  --font-mono: var(--font-geist-mono);
+
+  --animate-blink: blink 1s steps(2, end) infinite;
+  --animate-fade-in: fade-in 0.6s ease-out both;
+  --animate-scanlines: scanlines 8s linear infinite;
+  --animate-flicker: flicker 6s infinite;
+  --animate-boot-line: boot-line 0.3s ease-out both;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scanlines {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+}
+
+@keyframes flicker {
+  0%, 96%, 100% { opacity: 1; }
+  97% { opacity: 0.96; }
+  98% { opacity: 1; }
+  99% { opacity: 0.94; }
+}
+
+@keyframes boot-line {
+  from { opacity: 0; transform: translateX(-4px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-mono), ui-monospace, "SF Mono", Consolas, monospace;
+  font-feature-settings: "ss01";
+}
+
+::selection {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+/* Faint CRT scanlines overlay */
+.crt-scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.025) 0px,
+    rgba(255, 255, 255, 0.025) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+/* Soft vignette */
+.crt-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 49;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+/* ASCII-style box around content */
+.ascii-box {
+  position: relative;
+  border: 1px solid var(--rule-strong);
+}
+.ascii-box::before,
+.ascii-box::after,
+.ascii-box > .corner-tr,
+.ascii-box > .corner-br {
+  content: "+";
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1;
+  color: var(--foreground);
+  background: var(--background);
+  padding: 0 2px;
+}
+.ascii-box::before { top: -7px; left: -5px; }   /* top-left */
+.ascii-box::after  { bottom: -7px; left: -5px; } /* bottom-left */
+
+/* Prompt prefix used on links and headings */
+.prompt::before {
+  content: "$ ";
+  color: var(--muted);
+}
+
+/* Blinking caret */
+.caret {
+  display: inline-block;
+  width: 0.55ch;
+  height: 1em;
+  background: var(--foreground);
+  vertical-align: -0.12em;
+  animation: var(--animate-blink);
+  margin-left: 2px;
+}
+
+/* Reveal-on-scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Terminal link */
+.t-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4ch;
+  color: var(--foreground);
+}
+.t-link::before {
+  content: "[ ]";
+  color: var(--muted);
+  transition: color 0.15s ease;
+}
+.t-link:hover::before {
+  content: "[x]";
+  color: var(--foreground);
+}
+.t-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  .crt-scanlines, .crt-vignette { display: none; }
+}

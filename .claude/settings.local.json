@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(curl -sS -o /tmp/resume.html -w \"HTTP %{http_code}\\\\n\" http://localhost:3000/)",
+      "Read(//tmp/**)",
+      "Bash(curl -sS -o /tmp/resume2.html -w \"HTTP %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -sf -o /dev/null http://localhost:3000/)",
+      "Bash(curl -sS -o /tmp/resume3.html -w \"HTTP %{http_code}\\\\n\" http://localhost:3000/)",
+      "WebFetch(domain:portfolio-cordero.vercel.app)",
+      "WebFetch(domain:next-level-electrix.vercel.app)",
+      "WebFetch(domain:reliableroofingservices.net)",
+      "WebFetch(domain:cityoflondonhypnotherapy.vercel.app)",
+      "WebFetch(domain:at-landscapes.vercel.app)",
+      "WebFetch(domain:cvehiclerepairs.co.uk)",
+      "WebFetch(domain:bradgateheights.vercel.app)",
+      "WebFetch(domain:atkinson-decor.vercel.app)",
+      "WebFetch(domain:www.cvehiclerepairs.co.uk)",
+      "Bash(curl -sS -o /tmp/derek2.html -w \"HTTP %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -sS -o /tmp/derek3.html -w \"HTTP %{http_code}\\\\n\" http://localhost:3000/)",
+      "WebFetch(domain:1stmobiletyres.co.uk)",
+      "WebFetch(domain:homememortgages.vercel.app)",
+      "WebFetch(domain:ecvehiclerepairs.co.uk)"
+    ]
+  }
+}
